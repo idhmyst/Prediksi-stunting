@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediksi Stunting</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="card">
+        <h2>Cek Status Gizi Balita</h2>
+    <form action="/predict" method="post">
+        <label for="umur">Umur (bulan)</label>
+        <input
+            type="number"
+            id="umur"
+            name="umur"
+            placeholder="umur (bulan)"
+            min="0"
+            required
+            value="{{ umur | default('') }}"
+        >
+        <br><br>
+        <label for="jenis_kelamin">Jenis Kelamin</label>
+        <select id="jenis_kelamin" name="jenis_kelamin">
+            <option value="laki-laki" {% if jenis_kelamin == 'laki-laki' %}selected{% endif %}>Laki-laki</option>
+            <option value="perempuan" {% if jenis_kelamin == 'perempuan' %}selected{% endif %}>Perempuan</option>
+        </select>
+        <br><br>
+        <label for="tinggi">Tinggi Badan (cm)</label>
+        <input
+            type="number"
+            id="tinggi"
+            name="tinggi"
+            placeholder="tinggi badan (cm)"
+            step="0.1"
+            required
+            value="{{ tinggi | default('') }}"
+        >
+        <br><br>
+        <button type="submit">Prediksi Sekarang</button>
+        <button type="button" class="button-reset" onclick="clearForm()">Hapus Input</button>
+    </form>
+    <h3 id="prediction_text">{{ prediction_text }}</h3>
+    </div>
+    <script>
+        function clearForm() {
+            document.getElementById('umur').value = '';
+            document.getElementById('jenis_kelamin').value = 'laki-laki';
+            document.getElementById('tinggi').value = '';
+            document.getElementById('prediction_text').textContent = '';
+        }
+    </script>
+</body>
+</html>
