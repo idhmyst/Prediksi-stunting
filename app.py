@@ -18,8 +18,8 @@ except Exception as e:
 
 LABEL_MAPPING = {
     0: "Normal",
-    1: "Severely Stunted",
-    2: "Stunted",
+    1: "Sangat Pendek",
+    2: "Pendek",
     3: "Tinggi",
 }
 
