@@ -7,95 +7,138 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="container">
-        <div class="card">
-            <h2>Cek Status Gizi Balita</h2>
-            <form action="/predict_stunting" method="post">
-                <label for="umur">Umur</label>
-                <input
-                    type="number"
-                    id="umur"
-                    name="umur"
-                    placeholder="umurnya berapa bund?"
-                    min="0"
-                    required
-                    value="{{ umur | default('') }}"
-                >
-                <br><br>
-                <label for="jenis_kelamin">Jenis Kelamin</label>
-                <select id="jenis_kelamin" name="jenis_kelamin">
-                    <option value="laki-laki" {% if jenis_kelamin == 'laki-laki' %}selected{% endif %}>Laki-laki</option>
-                    <option value="perempuan" {% if jenis_kelamin == 'perempuan' %}selected{% endif %}>Perempuan</option>
-                </select>
-                <br><br>
-                <label for="tinggi">Tinggi</label>
-                <input
-                    type="number"
-                    id="tinggi"
-                    name="tinggi"
-                    placeholder="Tingginya berapa bund?"
-                    step="0.1"
-                    required
-                    value="{{ tinggi | default('') }}"
-                >
-                <br><br>
-                <button type="submit">Prediksi Sekarang</button>
-                <button type="button" class="button-reset" onclick="clearFormStunting()">Hapus Input</button>
-            </form>
-            <h3 id="prediction_text_stunting">{{ prediction_text_stunting }}</h3>
-        </div>
+    <div class="app">
+        <header class="topbar">
+            <div class="brand">
+                <div class="brand-title">Prediksi</div>
+                <div class="brand-sub">Stunting & Mata Minus</div>
+            </div>
+            <nav class="tabs" role="tablist" aria-label="menu prediksi">
+                <button type="button" class="tab active" onclick="showPanel('panel-stunting')">Stunting</button>
+                <button type="button" class="tab" onclick="showPanel('panel-eye')">Mata Minus</button>
+            </nav>
+        </header>
 
-        <div class="card">
-            <h2>Prediksi Kesehatan Mata</h2>
-            <form action="/predict_eye" method="post">
-                <label for="exercise_hours">Exercise Hours</label>
-                <input type="number" step="0.1" id="exercise_hours" name="exercise_hours" required value="{{ exercise_hours | default('') }}">
-                <br><br>
+        <main class="panels">
+            <section id="panel-stunting" class="panel">
+                <div class="card">
+                    <h2>Cek Status Gizi Balita</h2>
+                    <form action="/predict_stunting" method="post">
+                        <label for="umur">Umur</label>
+                        <input
+                            type="number"
+                            id="umur"
+                            name="umur"
+                            placeholder="umurnya berapa bund?"
+                            min="0"
+                            required
+                            value="{{ umur | default('') }}"
+                        >
+                        <br><br>
 
-                <label for="mental_health_score">Mental Health Score</label>
-                <input type="number" step="0.1" id="mental_health_score" name="mental_health_score" required value="{{ mental_health_score | default('') }}">
-                <br><br>
+                        <label for="jenis_kelamin">Jenis Kelamin</label>
+                        <select id="jenis_kelamin" name="jenis_kelamin">
+                            <option value="laki-laki" {% if jenis_kelamin == 'laki-laki' %}selected{% endif %}>Laki-laki</option>
+                            <option value="perempuan" {% if jenis_kelamin == 'perempuan' %}selected{% endif %}>Perempuan</option>
+                        </select>
+                        <br><br>
 
-                <label for="screen_time_hours">Screen Time Hours</label>
-                <input type="number" step="0.1" id="screen_time_hours" name="screen_time_hours" required value="{{ screen_time_hours | default('') }}">
-                <br><br>
+                        <label for="tinggi">Tinggi</label>
+                        <input
+                            type="number"
+                            id="tinggi"
+                            name="tinggi"
+                            placeholder="Tingginya berapa bund?"
+                            step="0.1"
+                            required
+                            value="{{ tinggi | default('') }}"
+                        >
+                        <br><br>
 
-                <label for="screen_brightness_avg">Screen Brightness Avg</label>
-                <input type="number" step="0.1" id="screen_brightness_avg" name="screen_brightness_avg" required value="{{ screen_brightness_avg | default('') }}">
-                <br><br>
+                        <div class="actions">
+                            <button type="submit">Prediksi Stunting</button>
+                            <button type="button" class="button-reset" onclick="clearFormStunting()">Hapus</button>
+                        </div>
+                    </form>
 
-                <label for="age">Age</label>
-                <input type="number" step="0.1" id="age" name="age" required value="{{ age | default('') }}">
-                <br><br>
+                    <div class="result">
+                        <h3>Hasil Prediksi</h3>
+                        <p id="prediction_text_stunting">{{ prediction_text_stunting }}</p>
+                    </div>
+                </div>
+            </section>
 
-                <label for="height_cm">Height (cm)</label>
-                <input type="number" step="0.1" id="height_cm" name="height_cm" required value="{{ height_cm | default('') }}">
-                <br><br>
+            <section id="panel-eye" class="panel" style="display:none;">
+                <div class="card">
+                    <h2>Prediksi Kesehatan Mata (Mata Minus)</h2>
+                    <form action="/predict_eye" method="post">
+                        <!-- Layout mengikuti panel-stunting: input field -> br -> actions -->
+                        <label for="exercise_hours">Exercise Hours</label>
+                        <input type="number" step="0.1" id="exercise_hours" name="exercise_hours" required value="{{ exercise_hours | default('') }}">
+                        <br><br>
 
-                <label for="outdoor_light_exposure_hours">Outdoor Light Exposure Hours</label>
-                <input type="number" step="0.1" id="outdoor_light_exposure_hours" name="outdoor_light_exposure_hours" required value="{{ outdoor_light_exposure_hours | default('') }}">
-                <br><br>
+                        <label for="mental_health_score">Mental Health Score</label>
+                        <input type="number" step="0.1" id="mental_health_score" name="mental_health_score" required value="{{ mental_health_score | default('') }}">
+                        <br><br>
 
-                <label for="night_mode_usage">Night Mode Usage</label>
-                <input type="number" step="0.1" id="night_mode_usage" name="night_mode_usage" required value="{{ night_mode_usage | default('') }}">
-                <br><br>
+                        <label for="screen_time_hours">Screen Time Hours</label>
+                        <input type="number" step="0.1" id="screen_time_hours" name="screen_time_hours" required value="{{ screen_time_hours | default('') }}">
+                        <br><br>
 
-                <label for="screen_distance_cm">Screen Distance (cm)</label>
-                <input type="number" step="0.1" id="screen_distance_cm" name="screen_distance_cm" required value="{{ screen_distance_cm | default('') }}">
-                <br><br>
+                        <label for="screen_brightness_avg">Screen Brightness Avg</label>
+                        <input type="number" step="0.1" id="screen_brightness_avg" name="screen_brightness_avg" required value="{{ screen_brightness_avg | default('') }}">
+                        <br><br>
 
-                <label for="glasses_number">Glasses Number</label>
-                <input type="number" step="0.1" id="glasses_number" name="glasses_number" required value="{{ glasses_number | default('') }}">
-                <br><br>
+                        <label for="age">Age</label>
+                        <input type="number" step="0.1" id="age" name="age" required value="{{ age | default('') }}">
+                        <br><br>
 
-                <button type="submit">Prediksi Sekarang</button>
-                <button type="button" class="button-reset" onclick="clearFormEye()">Hapus Input</button>
-            </form>
-            <h3 id="prediction_text_eye">{{ prediction_text_eye }}</h3>
-        </div>
+                        <label for="height_cm">Height (cm)</label>
+                        <input type="number" step="0.1" id="height_cm" name="height_cm" required value="{{ height_cm | default('') }}">
+                        <br><br>
+
+                        <label for="outdoor_light_exposure_hours">Outdoor Light Exposure Hours</label>
+                        <input type="number" step="0.1" id="outdoor_light_exposure_hours" name="outdoor_light_exposure_hours" required value="{{ outdoor_light_exposure_hours | default('') }}">
+                        <br><br>
+
+                        <label for="night_mode_usage">Night Mode Usage</label>
+                        <input type="number" step="0.1" id="night_mode_usage" name="night_mode_usage" required value="{{ night_mode_usage | default('') }}">
+                        <br><br>
+
+                        <label for="screen_distance_cm">Screen Distance (cm)</label>
+                        <input type="number" step="0.1" id="screen_distance_cm" name="screen_distance_cm" required value="{{ screen_distance_cm | default('') }}">
+                        <br><br>
+
+                        <label for="glasses_number">Glasses Number</label>
+                        <input type="number" step="0.1" id="glasses_number" name="glasses_number" required value="{{ glasses_number | default('') }}">
+                        <br><br>
+
+                        <div class="actions">
+                            <button type="submit">Prediksi Mata Minus</button>
+                            <button type="button" class="button-reset" onclick="clearFormEye()">Hapus</button>
+                        </div>
+                    </form>
+
+                    <div class="result">
+                        <h3>Hasil Prediksi</h3>
+                        <p id="prediction_text_eye">{{ prediction_text_eye }}</p>
+                    </div>
+                </div>
+            </section>
+        </main>
     </div>
 
     <script>
+        function showPanel(panelId) {
+            document.getElementById('panel-stunting').style.display = panelId === 'panel-stunting' ? 'block' : 'none';
+            document.getElementById('panel-eye').style.display = panelId === 'panel-eye' ? 'block' : 'none';
+
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            const activeTab = Array.from(tabs).find(t => t.getAttribute('onclick').includes(panelId));
+            if (activeTab) activeTab.classList.add('active');
+        }
+
         function clearFormStunting() {
             document.getElementById('umur').value = '';
             document.getElementById('jenis_kelamin').value = 'laki-laki';
@@ -114,4 +157,5 @@
     </script>
 </body>
 </html>
+
 

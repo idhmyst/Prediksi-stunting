@@ -28,6 +28,9 @@ Model disimpan dalam format `.pkl` agar bisa langsung dimuat saat server berjala
 
 ## 3) Backend Flask: Alur Kerja di `app.py`
 
+> Catatan: Aplikasi ini memuat **dua model KNN** yang berbeda (stunting dan mata minus). Keduanya dilayani oleh Flask lewat **dua endpoint POST** yang terpisah agar tidak terjadi konflik input/fitur.
+
+
 ### 3.1 Memuat model dan scaler (startup)
 Saat aplikasi dijalankan, `app.py`:
 1. Memuat model stunting:

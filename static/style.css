@@ -12,19 +12,81 @@ body {
     background: url("/static/image.png") no-repeat center center fixed;
     background-size: cover;
     color: #0b3b8a;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     padding: 20px;
 }
 
-.container {
-    width: 100%;
+.app {
     max-width: 980px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 18px;
-    align-items: start;
+    margin: 0 auto;
+}
+
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 18px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow: 0 16px 40px rgba(15, 36, 73, 0.12);
+}
+
+.brand {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+}
+
+.brand-title {
+    font-weight: 900;
+    font-size: 1.2rem;
+}
+
+.brand-sub {
+    font-weight: 700;
+    opacity: 0.9;
+}
+
+.tabs {
+    display: flex;
+    gap: 10px;
+}
+
+.tab {
+    padding: 10px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    background: rgba(255, 255, 255, 0.25);
+    color: #0b3b8a;
+    cursor: pointer;
+    font-weight: 800;
+    transition: transform 0.08s ease, background 0.2s ease;
+}
+
+.tab:hover {
+    transform: translateY(-1px);
+    background: rgba(255, 255, 255, 0.35);
+}
+
+.tab.active {
+    background: var(--primary);
+    border-color: transparent;
+    color: #fff;
+}
+
+.panels {
+    margin-top: 18px;
+}
+
+.panel {
+    animation: fadeIn 0.18s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .card {
@@ -72,16 +134,22 @@ select:focus {
     box-shadow: 0 0 0 4px rgba(91, 150, 255, 0.14);
 }
 
+.actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 12px;
+}
+
 button {
     width: 100%;
     padding: 14px;
-    margin-top: 16px;
     border: none;
     border-radius: 12px;
     background: var(--primary);
     color: #ffffff;
     font-size: 1rem;
-    font-weight: 700;
+    font-weight: 800;
     cursor: pointer;
     transition: background 0.2s ease;
 }
@@ -98,15 +166,45 @@ button.button-reset:hover {
     background: var(--danger-hover);
 }
 
-h3 {
-    margin-top: 22px;
+.result {
+    margin-top: 18px;
+}
+
+.result h3 {
+    margin-top: 14px;
     text-align: center;
     color: #1a3a72;
     min-height: 1.2em;
 }
 
+.result p {
+    text-align: center;
+    font-weight: 800;
+    color: #0b3b8a;
+    word-break: break-word;
+}
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
 @media (max-width: 860px) {
-    .container {
+    .topbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .tabs {
+        justify-content: center;
+    }
+
+    .grid-2 {
+        grid-template-columns: 1fr;
+    }
+
+    .actions {
         grid-template-columns: 1fr;
     }
 }

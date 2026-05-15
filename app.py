@@ -158,9 +158,13 @@ def predict_eye():
         features = np.array([values], dtype=float)
         features_scaled = eye_scaler.transform(features)
         prediction = eye_model.predict(features_scaled)[0]
-        prediction_text_eye = (
-            f"Prediksi skor kesehatan mata: {LABEL_MAPPING_EYE.get(int(round(prediction)), prediction)}"
-        )
+        # LABEL_MAPPING_EYE memakai kelas 0-3, sementara model eye berupa regression.
+        # Pastikan yang tampil selalu teks/label, bukan float raw.
+        mapped = LABEL_MAPPING_EYE.get(int(round(prediction)))
+        if mapped is not None:
+            prediction_text_eye = f"Prediksi skor kesehatan mata: {mapped}"
+        else:
+            prediction_text_eye = f"Prediksi skor kesehatan mata: {float(prediction):.2f}"
     except ValueError as exc:
         error_message = str(exc)
     except Exception:
